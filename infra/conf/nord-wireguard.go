@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 
 	"github.com/golang/protobuf/proto"
@@ -54,7 +55,7 @@ func (c *NordWireGuardConfig) Build() (proto.Message, error) {
 }
 
 func (c *NordWireGuardConfig) RecommendedEndpoint() (hostname, publicKey string, err error) {
-	recommendedAPIURL := `https://api.nordvpn.com/v1/servers/recommendations?&filters\[servers_technologies\]\[identifier\]=wireguard_udp&limit=1`
+	recommendedAPIURL := `https://api.nordvpn.com/v1/servers/recommendations?&filters\[servers_technologies\]\[identifier\]=wireguard_udp&limit=25`
 	rsp, err := http.Get(recommendedAPIURL)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get recommended server: %w", err)
@@ -70,16 +71,21 @@ func (c *NordWireGuardConfig) RecommendedEndpoint() (hostname, publicKey string,
 		return "", "", fmt.Errorf("failed to decode response body: %w", err)
 	}
 
+	var nodes [][]string
 	for _, s := range servers {
 		for _, t := range s.Technologies {
 			if t.Name == "Wireguard" {
 				for _, m := range t.Metadata {
 					if m.Name == "public_key" {
-						return s.Hostname, m.Value, nil
+						nodes = append(nodes, []string{s.Hostname, m.Value})
 					}
 				}
 			}
 		}
 	}
-	return "", "", errors.New("nord empty recommended endpoint")
+	if len(nodes) == 0 {
+		return "", "", errors.New("nord empty recommended endpoint")
+	}
+	node := nodes[rand.Intn(len(nodes))]
+	return node[0], node[1], nil
 }
