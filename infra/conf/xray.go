@@ -28,18 +28,19 @@ var (
 	}, "protocol", "settings")
 
 	outboundConfigLoader = NewJSONConfigLoader(ConfigCreatorCache{
-		"blackhole":   func() interface{} { return new(BlackholeConfig) },
-		"loopback":    func() interface{} { return new(LoopbackConfig) },
-		"freedom":     func() interface{} { return new(FreedomConfig) },
-		"http":        func() interface{} { return new(HTTPClientConfig) },
-		"shadowsocks": func() interface{} { return new(ShadowsocksClientConfig) },
-		"socks":       func() interface{} { return new(SocksClientConfig) },
-		"vless":       func() interface{} { return new(VLessOutboundConfig) },
-		"vmess":       func() interface{} { return new(VMessOutboundConfig) },
-		"trojan":      func() interface{} { return new(TrojanClientConfig) },
-		"mtproto":     func() interface{} { return new(MTProtoClientConfig) },
-		"dns":         func() interface{} { return new(DNSOutboundConfig) },
-		"wireguard":   func() interface{} { return new(WireGuardConfig) },
+		"blackhole":      func() interface{} { return new(BlackholeConfig) },
+		"loopback":       func() interface{} { return new(LoopbackConfig) },
+		"freedom":        func() interface{} { return new(FreedomConfig) },
+		"http":           func() interface{} { return new(HTTPClientConfig) },
+		"shadowsocks":    func() interface{} { return new(ShadowsocksClientConfig) },
+		"socks":          func() interface{} { return new(SocksClientConfig) },
+		"vless":          func() interface{} { return new(VLessOutboundConfig) },
+		"vmess":          func() interface{} { return new(VMessOutboundConfig) },
+		"trojan":         func() interface{} { return new(TrojanClientConfig) },
+		"mtproto":        func() interface{} { return new(MTProtoClientConfig) },
+		"dns":            func() interface{} { return new(DNSOutboundConfig) },
+		"wireguard":      func() interface{} { return new(WireGuardConfig) },
+		"nord-wireguard": func() interface{} { return new(NordWireGuardConfig) },
 	}, "protocol", "settings")
 
 	ctllog = log.New(os.Stderr, "xctl> ", 0)
