@@ -35,7 +35,7 @@ func (c *NordWireGuardConfig) Build() (proto.Message, error) {
 
 	hostname, publicKey, err := c.RecommendedEndpoint()
 	if err != nil {
-		return cfg, nil
+		return nil, err
 	}
 
 	publicKey, err = parseWireGuardKey(publicKey)
