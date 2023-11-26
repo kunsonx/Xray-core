@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - nord-wireguard
 
 jobs:
   build-image:
